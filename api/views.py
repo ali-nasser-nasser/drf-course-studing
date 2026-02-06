@@ -9,13 +9,19 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
 
-
-class ProductList(generics.ListAPIView):
-    # queryset = Product.objects.all()
-    queryset = Product.objects.filter(price__gt="13.00")
+class ProductListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Product.objects.all()
+    # queryset = Product.objects.filter(stock__gt=0)
     serializer_class = ProductSerializer
 
+class ProductCreateAPIView(generics.CreateAPIView):
+    model= Product
+    serializer_class = ProductSerializer
+    def create(self, request, *args, **kwargs):
+        print(request.data)
+        return super().create(request, *args, **kwargs)
 # @api_view(['GET'])
 # def product_list(request):
 #     products= Product.objects.all()
@@ -55,15 +61,25 @@ class UserOrderListAPIView(generics.ListAPIView):
 #     serializer= OrderSerializer(orders, many=True)
 #     return Response(serializer.data)
 
+class ProductInfoAPIView(APIView):
+    def get(self, request):
+        products= Product.objects.all()
+        serializer= ProductInfoSerializer({
+            'product': products,
+            'count': products.count(),
+            'max_price': products.aggregate(Max('price'))['price__max']
+        })
+        return Response(serializer.data)
 
-@api_view(['GET'])
-def product_info(request):
-    products= Product.objects.all()
-    serializer= ProductInfoSerializer({
-        'product': products,
-        'count': products.count(),
-        'max_price': products.aggregate(Max('price'))['price__max']
-    })
-    return Response(serializer.data)
+        
+# @api_view(['GET'])
+# def product_info(request):
+#     products= Product.objects.all()
+#     serializer= ProductInfoSerializer({
+#         'product': products,
+#         'count': products.count(),
+#         'max_price': products.aggregate(Max('price'))['price__max']
+#     })
+#     return Response(serializer.data)
 
     
