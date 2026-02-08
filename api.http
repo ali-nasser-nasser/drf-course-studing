@@ -2,6 +2,27 @@ GET http://localhost:8000/products/ HTTP/1.1
 
 ###
 
+GET http://localhost:8000/products/8 HTTP/1.1
+
+###
+
+DELETE  http://localhost:8000/products/8/ HTTP/1.1
+
+###
+
+PUT http://localhost:8000/products/8/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "TV fff",
+    "description": "ssssssss of Product 1",
+    "price": 12.99,
+    "stock":10
+}   
+
+
+###
+
 POST http://localhost:8000/products/ HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcwNDE5NjU4LCJpYXQiOjE3NzA0MTkzNTgsImp0aSI6ImU2MDk0MzcxZGY4OTQ3OWI5YzYzYTU3MDUzN2U4NGQ5IiwidXNlcl9pZCI6IjIifQ.UBuPLol9ewnrdLTXS68fbJt4TX_2cKxe-KAzXsHrLMk
